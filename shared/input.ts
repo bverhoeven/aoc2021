@@ -8,6 +8,10 @@ export function getInputAsLines(filename = 'input.txt'): string[] {
     return getInput(filename).split('\n')
 }
 
+export function getTestInput(filename = 'test_input.txt'): string {
+    return getInput(filename)
+}
+
 export function getTestInputAsLines(filename = 'test_input.txt'): string[] {
     return getInputAsLines(filename)
 }
