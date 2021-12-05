@@ -8,24 +8,24 @@ class Bounds {
 }
 
 export class Grid<T> {
-    private grid: Map<number, Map<number, T>> = new Map()
-    private rowRange = new Bounds(0, 0)
-    private columnRange = new Bounds(0, 0)
+    protected grid: Map<number, Map<number, T>> = new Map()
+    protected rowRange = new Bounds(0, 0)
+    protected columnRange = new Bounds(0, 0)
 
     get(x: number, y: number): T | undefined {
-        return this.grid.get(x)?.get(y) ?? undefined
+        return this.grid.get(y)?.get(x) ?? undefined
     }
 
     set(x: number, y: number, value: T): void {
-        let row = this.grid.get(x)
+        let row = this.grid.get(y)
         if (!row) {
-            this.grid.set(x, (row = new Map()))
+            this.grid.set(y, (row = new Map()))
         }
 
-        row.set(y, value)
+        row.set(x, value)
 
-        this.rowRange.update(x)
-        this.columnRange.update(y)
+        this.rowRange.update(y)
+        this.columnRange.update(x)
     }
 
     count(condition: (value: T, x: number, y: number) => boolean) {
@@ -33,14 +33,14 @@ export class Grid<T> {
     }
 
     reduce<R>(callback: (previous: R, value: T, x: number, y: number) => R, result: R): R {
-        for (let x = this.rowRange.min; x <= this.rowRange.max; x++) {
-            const row = this.grid.get(x)
+        for (let y = this.rowRange.min; y <= this.rowRange.max; y++) {
+            const row = this.grid.get(y)
             if (!row) {
                 continue
             }
 
-            for (let y = this.columnRange.min; y <= this.columnRange.max; y++) {
-                const value = row.get(y)
+            for (let x = this.columnRange.min; x <= this.columnRange.max; x++) {
+                const value = row.get(x)
                 if (value !== undefined) {
                     result = callback(result, value, x, y)
                 }
