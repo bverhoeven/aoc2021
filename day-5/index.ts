@@ -69,11 +69,11 @@ const grid = new NumberGrid()
 processRegularSegments(grid, segments)
 console.log(
     'Part one:',
-    grid.count((count) => count >= 2)
+    grid.count((cell) => cell.value >= 2)
 )
 
 processDiagonalSegments(grid, segments)
 console.log(
     'Part two:',
-    grid.count((count) => count >= 2)
+    grid.count((cell) => cell.value >= 2)
 )
