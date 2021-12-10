@@ -13,5 +13,5 @@ npm start -w day-<x>
 ```
 
 ```
-npm start -w day-1
+npm start -w day-01
 ```
