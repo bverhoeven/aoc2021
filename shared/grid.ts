@@ -135,13 +135,20 @@ export class GridCell<T = unknown> {
         return other.row === this.row && other.column === this.column
     }
 
-    getNeighbors(): GridCell<T>[] {
+    getNeighbors(includeDiagonals = false): GridCell<T>[] {
         const candidates = [
             [this.row, this.column - 1],
             [this.row + 1, this.column],
             [this.row, this.column + 1],
             [this.row - 1, this.column],
         ]
+
+        if (includeDiagonals) {
+            candidates.push([this.row + 1, this.column - 1])
+            candidates.push([this.row + 1, this.column + 1])
+            candidates.push([this.row - 1, this.column + 1])
+            candidates.push([this.row - 1, this.column - 1])
+        }
 
         const neighbors: GridCell<T>[] = []
         for (const [row, column] of candidates) {
