@@ -75,7 +75,7 @@ export class Grid<T> {
         let str = ''
         for (const row of this.rowRange.iterator()) {
             for (const column of this.columnRange.iterator()) {
-                str += cellPrinter(new GridCell(this, row, column, this.get(row, column)))
+                str += cellPrinter(new GridCell(this, row, column))
             }
 
             str += '\n'
@@ -89,7 +89,7 @@ export class Grid<T> {
             for (const column of this.columnRange.iterator()) {
                 const value = this.get(row, column)
                 if (value !== undefined) {
-                    yield new GridCell(this, row, column, value)
+                    yield new GridCell(this, row, column)
                 }
             }
         }
@@ -111,7 +111,7 @@ export class NumberGrid extends Grid<number> {
 }
 
 export class GridCell<T = unknown> {
-    constructor(private grid: Grid<T>, readonly row = 0, readonly column = 0, readonly value: T) {
+    constructor(private grid: Grid<T>, readonly row = 0, readonly column = 0) {
         Object.defineProperty(this, 'grid', { enumerable: false })
     }
 
@@ -121,6 +121,14 @@ export class GridCell<T = unknown> {
 
     get y() {
         return this.column
+    }
+
+    get value() {
+        return this.grid.get(this.row, this.column) as T
+    }
+
+    set value(value: T) {
+        this.grid.set(this.row, this.column, value)
     }
 
     equalsPosition(other: GridCell<unknown>) {
@@ -139,7 +147,7 @@ export class GridCell<T = unknown> {
         for (const [row, column] of candidates) {
             const value = this.grid.get(row, column)
             if (value !== undefined) {
-                neighbors.push(new GridCell(this.grid, row, column, value))
+                neighbors.push(new GridCell(this.grid, row, column))
             }
         }
 
