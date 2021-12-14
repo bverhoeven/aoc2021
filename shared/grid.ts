@@ -99,8 +99,37 @@ export class Grid<T> {
         return this.rowRange.max + 1
     }
 
+    set height(height: number) {
+        if (height === 0) {
+            throw new Error('Invalid value')
+        }
+
+        while (this.rowRange.max >= height) {
+            this.rows.delete(this.rowRange.max)
+            this.rowRange.max--
+        }
+
+        this.rowRange.max = height - 1
+    }
+
     get width() {
         return this.columnRange.max + 1
+    }
+
+    set width(width: number) {
+        if (width === 0) {
+            throw new Error('Invalid value')
+        }
+
+        while (this.columnRange.max >= width) {
+            for (const row of this.rowRange.iterator()) {
+                this.rows.get(row)?.delete(this.columnRange.max)
+            }
+
+            this.columnRange.max--
+        }
+
+        this.columnRange.max = width - 1
     }
 }
 
